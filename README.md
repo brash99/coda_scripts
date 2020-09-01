@@ -9,7 +9,7 @@ A collection scripts for use with small scale DAQs running CODA 3
 * Install scripts on CODA 3 Platform host, ROC and PEB clients.
   * With git
 
-        git clone git@github.com:bmoffit/coda_scripts.git ~/coda3/coda_scripts-master
+        git clone git@github.com:JeffersonLab/coda_scripts.git ~/coda3/coda_scripts-master
 
   * From zip
 
