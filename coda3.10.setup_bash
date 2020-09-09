@@ -34,7 +34,7 @@ export CODA_VME_LIB=${CODA_VME}/${MACHINE}/lib
 export CODA_VME_BIN=${CODA_VME}/${MACHINE}/bin
 
 #   Only set TCL Environment variables for CPUs running ROCs - this is currently 32 bit Linux ARCH (RHEL5 and arm7l)
-if [ -e "/dev/vme_ctl" ]; then
+if [ -e "/dev/vme_ctl" ] || [ "$MACHINE" == "Linux-armv7l" ] ; then
     export TCL_LIBRARY=${CODA}/common/lib/tcl7.4
     export ITCL_LIBRARY=${CODA}/common/lib/itcl2.0
     export TK_LIBRARY=${CODA}/common/lib/tk
