@@ -55,7 +55,7 @@ else
 fi
 
 # Do not clobber LD_LIBRARY_PATH
-if [ -n $LD_LIBRARY_PATH ]; then
+if [ -n "$LD_LIBRARY_PATH" ]; then
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CMSG_LIB}:${CODA_LIB}:${CODA_VME_LIB}
 else
     export LD_LIBRARY_PATH=${CMSG_LIB}:${CODA_LIB}:${CODA_VME_LIB}
