@@ -1,30 +1,37 @@
-# BASH Environment setup for CODA 3
+# BASH Environment setup for CODA 3 on ROCs for bbdaq
 
-# Prune any previous CODA defs in PATH and LD_LIBRARY_PATH
+# Set default CODA_SCRIPTS
+: ${CODA_SCRIPTS:=${HOME}/coda_scripts}
 
-export PATH=`echo $PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
-export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
-export CODA_CONFIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-export PATH=${CODA_CONFIG}:${PATH}
+export CODA_SCRIPTS PATH=${CODA_SCRIPTS}:${PATH}
 
-export CODA=/site/coda/3.10
+# Set default CODA
+: ${CODA:=/mnt/SBS/coda/3.10_arm}
+export CODA
+
+# Set default SESSION
+: ${SESSION:=bbdaq}
+export SESSION
+
+# CODA3 script over-writes $EXPID
+SAVE_EXPID=${EXPID}
 
 if [ -f $CODA/.setup_bash ]; then
     source $CODA/.setup_bash
 else
-    source $CODA_CONFIG/coda3.10.setup_bash
+    source ${CODA_SCRIPTS}/coda3.10.setup_bash
 fi
 
-export SESSION=session
-export EXPID=expid
+export EXPID=$SAVE_EXPID
 
-export COOL_HOME=${HOME}/coda3/cool
-export JAVA_HOME=${HOME}/jdk1.8.0_152
+# Set default COOL_HOME and JAVA_HOME
+: ${COOL_HOME:=${HOME}/coda/cool}
+: ${JAVA_HOME:=${HOME}/jdk1.8.0_152}
+export COOL_HOME JAVA_HOME
 
-export REMEX_CMSG_HOST=thishost.jlab.org
-export REMEX_CMSG_PASSWORD=${EXPID}
+: ${REMEX_CMSG_HOST:=tedbbdaq}
+export REMEX_CMSG_HOST REMEX_CMSG_PASSWORD=${EXPID}
 
-export CODA_COMPONENT_TABLE=$CODA_CONFIG/config/${EXPID}/coda_component_table.cfg
 
-# Add config scripts to path
-export PATH=${CODA_CONFIG}:$PATH
+: ${CODA_COMPONENT_TABLE:=${CODA_SCRIPTS}/config/${SESSION}/coda_component_table.cfg}
+export CODA_COMPONENT_TABLE

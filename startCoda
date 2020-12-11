@@ -71,7 +71,7 @@ set_xterm_title_cmd() {
 	    ;;
 	"PEB" )
 	    XTERM_COLOR="lightblue"
-	    XTERM_CMD="remote_vme $hostname nobody startPEB.sh"
+	    XTERM_CMD="remote_vme $hostname nobody bash -l startPEB.sh"
 	    ;;
     esac
 
