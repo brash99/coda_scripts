@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Shell script to start coda_roc
+# Shell script to start coda_ts
 #
 #  If no arguments, use coda_conf_functions to get ROC information
 #
@@ -9,7 +9,7 @@
 #   startROC.sh ROCNAME ROCOPTIONS
 #
 #   Where ROCNAME is the name of the ROC component to start
-#   and ROCOPTIONS (optional) are any other arguments to copy to the coda_roc
+#   and ROCOPTIONS (optional) are any other arguments to copy to the coda_ts
 #   commandline
 #
 
@@ -38,11 +38,11 @@ else
     ROCOPTION=$CODA_COMPONENT_OPTION
 fi
 
-ROC_ACTIVE=$(pgrep coda_roc)
+ROC_ACTIVE=$(pgrep coda_ts)
 if [ -n "$ROC_ACTIVE" ]; then
-    echo "WARNING: coda_roc already running"
+    echo "WARNING: coda_ts already running"
     echo "         killing them"
-    killall -v coda_roc
+    killall -v coda_ts
 fi
 
 
@@ -54,4 +54,4 @@ echo "   ROC name    =" $ROCNAME
 echo "   ROC option  =" $ROCOPTION
 echo "   Commandline =" $ARGS
 echo "************************************************************"
-coda_roc -i -v -name $ROCNAME -session $SESSION $ROCOPTION
+coda_ts -i -v -name $ROCNAME $ROCOPTION
