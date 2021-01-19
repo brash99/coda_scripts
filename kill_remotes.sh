@@ -21,7 +21,7 @@ pkill -f "remote_vme.*startROC.sh"
 for host in $ROC_hosts
 do
     echo "Killing ROC on $host"
-    ssh $host pkill coda_roc
+    ssh $host pkill coda_ts
 done
 
 # Get list of PEB hosts
