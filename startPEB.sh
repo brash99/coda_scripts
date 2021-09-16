@@ -11,17 +11,28 @@ if [ -z $JAVA_HOME ]; then
     exit 1
 fi
 
-. coda_conf_functions
+if [ ${#@} -gt 0 ]; then
+    # Get the PEB component name
+    PEBNAME=$1
 
-# Get the PEB component name
-codaconf_get_component_name $HOSTNAME PEB
-PEBNAME=$CODA_COMPONENT_NAME
+    # Get this PEB's commandline option
+    shift 1
+    PEBOPTION=$@
+else
 
-# Get this ROC's commandline option
-codaconf_get_name_option $HOSTNAME $PEBNAME
-PEBOPTION=$CODA_COMPONENT_OPTION
+    . coda_conf_functions
 
-PEB_ACTIVE=$(pgrep coda_emu_peb)
+    # Get the PEB component name
+    codaconf_get_component_name $HOSTNAME PEB
+    PEBNAME=$CODA_COMPONENT_NAME
+
+    # Get this ROC's commandline option
+    codaconf_get_name_option $HOSTNAME $PEBNAME
+    PEBOPTION=$CODA_COMPONENT_OPTION
+
+fi
+
+PEB_ACTIVE=$(pgrep -U $UID coda_emu_peb)
 if [ -n "$PEB_ACTIVE" ]; then
     echo "WARNING: coda_emu_peb already running"
     echo "         killing them"

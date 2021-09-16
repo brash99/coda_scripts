@@ -15,9 +15,27 @@
 
 ARGS=$@
 
-if [ -z $HOSTNAME ]; then
-    HOSTNAME=$(hostname -s)
-fi
+DEFAULT="-i -v"
+PROG=$(basename $0)
+TYPE=ROC
+CODA_ROC=coda_roc
+
+case "$PROG" in
+    "startFPGA.sh" )
+	TYPE=FPGA
+	;;
+
+    "startTS.sh" )
+	TYPE=TS
+	CODA_ROC=coda_ts
+	;;
+
+    * )
+	TYPE=ROC
+	;;
+esac
+
+SHOSTNAME=$(hostname -s)
 
 if [ ${#@} -gt 0 ]; then
     # Get the ROC component name
@@ -30,28 +48,29 @@ else
     . coda_conf_functions
 
     # Get the ROC component name
-    codaconf_get_component_name $HOSTNAME ROC
+    codaconf_get_component_name $SHOSTNAME $TYPE
     ROCNAME=$CODA_COMPONENT_NAME
 
     # Get this ROC's commandline option
-    codaconf_get_name_option $HOSTNAME $ROCNAME
+    codaconf_get_name_option $SHOSTNAME $ROCNAME
     ROCOPTION=$CODA_COMPONENT_OPTION
 fi
 
-ROC_ACTIVE=$(pgrep coda_roc)
+ROC_ACTIVE=$(pgrep ${CODA_ROC})
 if [ -n "$ROC_ACTIVE" ]; then
-    echo "WARNING: coda_roc already running"
+    echo "WARNING: ${CODA_ROC} already running"
     echo "         killing them"
-    killall -v coda_roc
+    killall -v ${CODA_ROC}
 fi
 
 
 echo "************************************************************"
-echo "Starting ROC on" $HOSTNAME
+echo "Starting ROC on" $SHOSTNAME
 echo "   SESSION     =" $SESSION
 echo "   EXPID       =" $EXPID
 echo "   ROC name    =" $ROCNAME
+echo "   TYPE        =" $TYPE
 echo "   ROC option  =" $ROCOPTION
 echo "   Commandline =" $ARGS
 echo "************************************************************"
-coda_roc -i -v -name $ROCNAME -session $SESSION $ROCOPTION
+${CODA_ROC} $DEFAULT -type $TYPE -name $ROCNAME -session $SESSION $ROCOPTION

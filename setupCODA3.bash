@@ -6,7 +6,7 @@
 export CODA_SCRIPTS PATH=${CODA_SCRIPTS}:${PATH}
 
 # Set default CODA
-: ${CODA:=/mnt/SBS/coda/3.10_arm}
+: ${CODA:=/adaqfs/home/sbs-onl/coda/3.10_devel}
 export CODA
 
 # Set default SESSION
@@ -25,8 +25,8 @@ fi
 export EXPID=$SAVE_EXPID
 
 # Set default COOL_HOME and JAVA_HOME
-: ${COOL_HOME:=${HOME}/coda/cool}
-: ${JAVA_HOME:=${HOME}/jdk1.8.0_152}
+: ${COOL_HOME:=${HOME}/coda/coolDB}
+: ${JAVA_HOME:=${HOME}/coda/jdk1.8.0_152}
 export COOL_HOME JAVA_HOME
 
 : ${REMEX_CMSG_HOST:=tedbbdaq}
