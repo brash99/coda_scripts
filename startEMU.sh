@@ -17,52 +17,81 @@ ARGS=$@
 
 DEFAULT="-i -v"
 PROG=$(basename $0)
-TYPE=PEB
-CODA_EMU=coda_emu_peb
+TYPE=
+CODA_EMU=
+
+case "$PROG" in
+    "startER.sh" )
+	TYPE=ER
+	CODA_EMU=coda_emu_er
+	;;
+
+    "startSEB.sh" )
+	TYPE=SEB
+	CODA_EMU=coda_emu_seb
+	;;
+
+    "startDC.sh" )
+	TYPE=DC
+	CODA_EMU=coda_emu_dc
+	;;
+
+    "startPEB.sh" )
+	TYPE=PEB
+	CODA_EMU=coda_emu_peb
+	;;
+
+    * )
+	TYPE=PEB
+	CODA_EMU=coda_emu_peb
+	;;
+esac
+
 
 
 HOSTNAME=$(hostname -s)
 
-# CODA 3 PEB needs JAVA_HOME define
+# CODA 3 EMU needs JAVA_HOME define
 if [ -z $JAVA_HOME ]; then
     echo "ERROR: \$JAVA_HOME not defined!"
     exit 1
 fi
 
 if [ ${#@} -gt 0 ]; then
-    # Get the PEB component name
-    PEBNAME=$1
+    # Get the EMU component name
+    EMUNAME=$1
 
-    # Get this PEB's commandline option
+    # Get this EMU's commandline option
     shift 1
-    PEBOPTION=$@
+    EMUOPTION=$@
 else
 
     . coda_conf_functions
 
-    # Get the PEB component name
-    codaconf_get_component_name $HOSTNAME PEB
-    PEBNAME=$CODA_COMPONENT_NAME
+    # Get the EMU component name
+    codaconf_get_component_name $HOSTNAME $TYPE
+    EMUNAME=$CODA_COMPONENT_NAME
 
     # Get this ROC's commandline option
-    codaconf_get_name_option $HOSTNAME $PEBNAME
-    PEBOPTION=$CODA_COMPONENT_OPTION
+    codaconf_get_name_option $HOSTNAME $EMUNAME
+    EMUOPTION=$CODA_COMPONENT_OPTION
 
 fi
 
-PEB_ACTIVE=$(pgrep -U $UID coda_emu_peb)
-if [ -n "$PEB_ACTIVE" ]; then
-    echo "WARNING: coda_emu_peb already running"
+EMU_ACTIVE=$(pgrep -U $UID ${CODA_EMU})
+if [ -n "$EMU_ACTIVE" ]; then
+    echo "WARNING: ${CODA_EMU} already running"
     echo "         killing them"
-    killall -v coda_emu_peb
+    killall -v ${CODA_EMU}
 fi
 
 
 echo "************************************************************"
-echo "Starting PEB on" $HOSTNAME
+echo "Starting EMU on" $HOSTNAME
+echo "   Commandline =" $ARGS
 echo "   SESSION     =" $SESSION
 echo "   EXPID       =" $EXPID
-echo "   PEB name    =" $PEBNAME
-echo "   PEB option  =" $PEBOPTION
+echo "   EMU name    =" $EMUNAME
+echo "   EMU option  =" $EMUOPTION
 echo "************************************************************"
-coda_emu_peb $PEBNAME $PEBOPTION
+${CODA_EMU} $EMUNAME $EMUOPTION
