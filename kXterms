@@ -1,10 +1,7 @@
 #!/bin/bash
 #
-#  Kill the remote_vme's
+#  Kill the xterms spawed with startXterms
 #
-#
-#
-TEST=1
 
 # Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
 CODA_SCRIPTS=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts
@@ -12,76 +9,41 @@ CODA_COMPONENT_TABLE=config/test/coda_component_table.cfg
 . ${CODA_SCRIPTS}/coda_conf_functions
 PATH=${CODA_SCRIPTS}:$PATH
 
-# Get list of ROC hosts
-coda_conf_get_component_list TS
-if [ $? == 1 ] ; then
-    ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+TYPES=( "TS" "ROC" "FPGA" "PEB" "SEB" "ER" "DC" )
 
+for type in ${TYPES[@]}
+do
+    coda_conf_get_component_list $type
+    if [ $? == 1 ] ; then
+	hosts=${CODA_HOSTNAME_LIST[@]}
 
-    # kill the remote_vme connections for the ROCs
-    echo "Killing local remote_vme startTS.sh connections"
-    pkill -U $UID -f "remote_vme.*startTS.sh"
+	rval=$(pgrep -c -U $UID -f "remote_vme.*start${type}.sh")
 
+	if [ ! "$rval" == "0" ]; then
+	    echo "Killing local remote_vme start${type}.sh connections"
+	    pkill -U $UID -f "remote_vme.*start${type}.sh"
+	fi
 
-    # now kill the ROC, if it's still runnin gon the remote host
-    for host in $ROC_hosts
-    do
-	echo "Killing ROC on $host"
-	ssh $host pkill coda_ts
-    done
-fi
+	case "$type" in
+	    "TS" )
+		KILLSTRING="coda_ts"
+		;;
+	    "ROC" | "FPGA" )
+		KILLSTRING="coda_roc"
+		;;
+	    "PEB" | "ER" | "SEB" | "DC" )
+		KILLSTRING="-f org.jlab.coda.emu.EmuFactory"
+		;;
+	esac
 
-# Get list of ROC hosts
-coda_conf_get_component_list ROC
-if [ $? == 1 ] ; then
-    ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+	# now kill the ROC, if it's still runnin gon the remote host
+	for host in $hosts
+	do
+	    echo "  Killing $type on $host"
+	    ssh -l sbs-onl $host pkill $KILLSTRING
+	done
+    fi
 
+done
 
-    # kill the remote_vme connections for the ROCs
-    echo "Killing local remote_vme startROC.sh connections"
-    pkill -U $UID -f "remote_vme.*startROC.sh"
-
-
-    # now kill the ROC, if it's still runnin gon the remote host
-    for host in $ROC_hosts
-    do
-	echo "Killing ROC on $host"
-	ssh $host pkill coda_roc
-    done
-fi
-
-# Get list of FPGA hosts
-coda_conf_get_component_list FPGA
-if [ $? == 1 ] ; then
-    ROC_hosts=${CODA_HOSTNAME_LIST[@]}
-
-
-    # kill the remote_vme connections for the FPGAs
-    echo "Killing local remote_vme startFPGA.sh connections"
-    pkill -U $UID -f "remote_vme.*startFPGA.sh"
-
-
-    # now kill the ROC, if it's still runnin gon the remote host
-    for host in $ROC_hosts
-    do
-	echo "Killing ROC on $host"
-	ssh $host pkill coda_roc
-    done
-fi
-
-# Get list of PEB hosts
-coda_conf_get_component_list PEB
-if [ $? == 1 ] ; then
-    PEB_hosts=${CODA_HOSTNAME_LIST[@]}
-
-    # kill the remote_vme connections for the PEBs
-    echo "Killing local remote_vme startPEB.sh connections"
-    pkill -U $UID -f "remote_vme.*startPEB.sh"
-
-    # now kill the ROC, if it's still runnin gon the remote host
-    for host in $PEB_hosts
-    do
-	echo "Killing PEB on $host"
-	ssh -l sbs-onl $host pkill -f org.jlab.coda.emu.EmuFactory
-    done
-fi
+exit

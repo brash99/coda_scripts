@@ -2,7 +2,7 @@
 #
 # Bash script to start up Xterm Windows for ROCs and EBs
 #
-TEST=1
+TEST=0
 
 XTERM_EXE="xterm"
 XTDIM=80x25
