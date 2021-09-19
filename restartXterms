@@ -1,6 +1,8 @@
 #!/bin/bash
 #
-#  Kill the xterms spawed with startXterms
+#  restartXterms: restart CODA components started with startXterms
+#     They should restart on their own, if they are run with
+#     the startXterms script
 #
 
 # Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
@@ -17,13 +19,6 @@ do
     if [ $? == 1 ] ; then
 	hosts=${CODA_HOSTNAME_LIST[@]}
 
-	rval=$(pgrep -c -U $UID -f "remote_vme.*start${type}.sh")
-
-	if [ ! "$rval" == "0" ]; then
-	    echo "Killing local start${type}.sh connections"
-	    pkill -U $UID -f "remote_vme.*start${type}.sh"
-	fi
-
 	case "$type" in
 	    "TS" )
 		KILLSTRING="coda_ts"
@@ -39,7 +34,7 @@ do
 	# now kill the ROC, if it's still runnin gon the remote host
 	for host in $hosts
 	do
-	    echo "  Killing $type on $host"
+	    echo "  Restarting $type on $host"
 	    ssh -l sbs-onl $host pkill $KILLSTRING
 	done
     fi
