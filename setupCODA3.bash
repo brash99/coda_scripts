@@ -1,4 +1,4 @@
-# BASH Environment setup for CODA 3 on ROCs for bbdaq
+# BASH Environment setup for SBS CODA 3
 
 # Set default CODA_SCRIPTS
 : ${CODA_SCRIPTS:=${HOME}/coda_scripts}

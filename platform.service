@@ -36,7 +36,7 @@ Type=simple
 Restart=always
 RestartSec=5
 User=sbs-onl
-ExecStart=/home/sbs-onl/coda_scripts/coda_platform.sh
+ExecStart=/adaqfs/home/sbs-onl/coda_scripts/coda_platform.sh
 ExecStop=/bin/pkill -f -TERM coda_platform.sh
 
 [Install]

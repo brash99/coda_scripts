@@ -1,5 +1,4 @@
-
-# CSH Environment setup for CODA 3
+# CSH Environment setup for SBS CODA 3
 
 # Prune any previous CODA defs in PATH and LD_LIBRARY_PATH
 
@@ -19,7 +18,7 @@ source $CODA/.setup
 setenv EXPID ${SAVE_EXPID}
 
 setenv COOL_HOME /adaqfs/home/sbs-onl/cool/coolDB
-setenv JAVA_HOME ${HOME}/java/jdk1.8.0_152
+setenv JAVA_HOME /adaqfs/home/sbs-onl/java/jdk1.8.0_152
 
 setenv REMEX_CMSG_HOST tedbbdaq
 setenv REMEX_CMSG_PASSWORD ${EXPID}
