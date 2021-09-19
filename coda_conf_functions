@@ -23,6 +23,11 @@ if [ -z $CODA_COMPONENT_TABLE ]; then
     exit -1
 fi
 
+# check for the existance of the config CODA_COMPONENT_TABLE
+if [ ! -f $CODA_COMPONENT_TABLE ]; then
+    echo "ERROR: CODA_COMPONENT_TABLE not found!"
+    exit -1
+fi
 
 #
 # codaconf_get_component_name hostname type
@@ -93,7 +98,7 @@ coda_conf_get_component_list() {
 	return 1
     fi
 
-    echo ERROR: Hostnames not found for type=$component_type
+#    echo ERROR: Hostnames not found for type=$component_type
     return 0
 
 }
