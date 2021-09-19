@@ -1,7 +1,25 @@
 #!/bin/bash
 #
-# Shell script to start coda_emu_peb
+# Shell script to start coda_emu_*
 #
+#  If no arguments, use coda_conf_functions to get EMU information
+#
+#  Otherwise:
+#
+#   startEMU.sh EMUNAME EMUOPTIONS
+#
+#   Where EMUNAME is the name of the EMU component to start
+#   and EMUOPTIONS (optional) are any other arguments to copy to the coda_emu_*
+#   commandline
+#
+
+ARGS=$@
+
+DEFAULT="-i -v"
+PROG=$(basename $0)
+TYPE=PEB
+CODA_EMU=coda_emu_peb
+
 
 HOSTNAME=$(hostname -s)
 
