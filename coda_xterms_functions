@@ -1,0 +1,18 @@
+# -*-Shell-script-*-
+#
+
+# Make sure we're in the CODA desktop
+if [ -z $VNCDESKTOP ] || [ "$VNCDESKTOP" != "coda" ]; then
+    zenity --error --text "Not in VNCDESKTOP=coda"
+    exit -1
+fi
+
+verify_or_die() {
+    action=$1
+    zenity --question --text "Are you sure you want to $action" --no-wrap --ok-label "YES" --cancel-label "NO"
+    decision=$?
+    if [ "$decision" == "1" ]; then
+	echo will die
+	exit 0;
+    fi
+}

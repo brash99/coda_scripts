@@ -3,12 +3,24 @@
 # Bash script to start up Xterm Windows for ROCs and EBs
 #
 TEST=0
+ARGS=$@
+
+
+if [ ${#@} -gt 0 ]; then
+    # Get the ROC component name
+    CHOICE=$1
+
+
+
+fi
 
 XTERM_EXE="xterm"
 XTDIM=80x25
-DEF_XINCR=520
-DEF_YINCR=380
+DEF_XINCR=510
+DEF_YINCR=390
 DEF_YSIZE=3
+
+
 
 # These are the first displayed
 ROC_XPOS=0
@@ -16,12 +28,15 @@ ROC_YPOS=0
 
 # Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
 CODA_SCRIPTS=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts
-CODA_COMPONENT_TABLE=config/test/coda_component_table.cfg
+CODA_COMPONENT_TABLE=/adaqfs/home/adaq/Desktop/SBS_coda_scripts/shiftworker_table.cfg
 . ${CODA_SCRIPTS}/coda_conf_functions
 PATH=${CODA_SCRIPTS}:$PATH
 
+. ${CODA_SCRIPTS}/coda_xterms_functions
+
+
 # Kill all previous Xterms remnants
-#kXterms
+kXterms
 
 
 set_xterm_title_cmd() {
@@ -34,7 +49,7 @@ set_xterm_title_cmd() {
     option=$CODA_COMPONENT_OPTION
 
     XTERM_TITLE="$hostname : $component: $name"
-    XTERM_CMD="remote_vme $hostname nobody ${CODA_SCRIPTS}/start$component.sh $name $option"
+    XTERM_CMD="remote_vme $hostname sbs-onl ${CODA_SCRIPTS}/start$component.sh $name $option"
 
     case "$component" in
 	"ROC" )

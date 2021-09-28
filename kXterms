@@ -3,9 +3,17 @@
 #  Kill the xterms spawed with startXterms
 #
 
-# Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
 CODA_SCRIPTS=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts
-CODA_COMPONENT_TABLE=config/test/coda_component_table.cfg
+. ${CODA_SCRIPTS}/coda_xterms_functions
+
+# Check first for any running remote_vme
+rval=$(pgrep -c -U $UID -f "remote_vme")
+if [ ! "$rval" == "0" ]; then
+    verify_or_die "Kill Xterms"
+fi
+
+# Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
+CODA_COMPONENT_TABLE=/adaqfs/home/adaq/Desktop/SBS_coda_scripts/shiftworker_table.cfg
 . ${CODA_SCRIPTS}/coda_conf_functions
 PATH=${CODA_SCRIPTS}:$PATH
 
@@ -40,7 +48,7 @@ do
 	for host in $hosts
 	do
 	    echo "  Killing $type on $host"
-	    ssh -l sbs-onl $host pkill $KILLSTRING
+	    ssh -f -l sbs-onl $host pkill $KILLSTRING
 	done
     fi
 
