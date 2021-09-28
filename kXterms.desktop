@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Kill CODA Xterms
+Type=Application
+Exec=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts/kXterms
+Icon=/usr/share/icons/mate/256x256/status/user-trash-full.png
