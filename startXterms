@@ -2,17 +2,20 @@
 #
 # Bash script to start up Xterm Windows for ROCs and EBs
 #
+# Uncomment this to test outside of VNC adaq2:4
+#VNCDESKTOP="coda"
+
 TEST=0
 ARGS=$@
 
-
 if [ ${#@} -gt 0 ]; then
-    # Get the ROC component name
-    CHOICE=$1
-
-
-
+    # Get the CODA_COMPONENT_TABLE
+    CODA_COMPONENT_TABLE=$1
+else
+    CODA_COMPONENT_TABLE=GMN_table.cfg
 fi
+
+echo "Using CODA_COMPONENT_TABLE=${CODA_COMPONENT_TABLE}"
 
 XTERM_EXE="xterm"
 XTDIM=80x25
@@ -27,8 +30,8 @@ ROC_XPOS=0
 ROC_YPOS=0
 
 # Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
-CODA_SCRIPTS=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts
-CODA_COMPONENT_TABLE=/adaqfs/home/adaq/Desktop/SBS_coda_scripts/shiftworker_table.cfg
+CODA_SCRIPTS=/adaqfs/home/sbs-onl/shiftworker_scripts/coda_scripts
+
 . ${CODA_SCRIPTS}/coda_conf_functions
 PATH=${CODA_SCRIPTS}:$PATH
 
