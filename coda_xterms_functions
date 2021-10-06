@@ -16,3 +16,8 @@ verify_or_die() {
 	exit 0;
     fi
 }
+
+starting_xterms_message() {
+    zenity --notification \
+	   --text "Starting CODA Component Xterms" &
+}

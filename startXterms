@@ -8,26 +8,25 @@
 TEST=0
 ARGS=$@
 
+# Default table
+CODA_COMPONENT_TABLE=/adaqfs/home/adaq/Desktop/SBS_coda_scripts/shiftworker_table.cfg
+
 if [ ${#@} -gt 0 ]; then
     # Get the CODA_COMPONENT_TABLE
     CODA_COMPONENT_TABLE=$1
-else
-    CODA_COMPONENT_TABLE=GMN_table.cfg
 fi
 
 echo "Using CODA_COMPONENT_TABLE=${CODA_COMPONENT_TABLE}"
 
 XTERM_EXE="xterm"
-XTDIM=80x25
+XTDIM=80x19
 DEF_XINCR=510
-DEF_YINCR=390
-DEF_YSIZE=3
-
-
+DEF_YINCR=280
+DEF_YSIZE=4
 
 # These are the first displayed
-ROC_XPOS=0
-ROC_YPOS=0
+FIRST_XPOS=0
+FIRST_YPOS=30
 
 # Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
 CODA_SCRIPTS=/adaqfs/home/sbs-onl/shiftworker_scripts/coda_scripts
@@ -38,8 +37,12 @@ PATH=${CODA_SCRIPTS}:$PATH
 . ${CODA_SCRIPTS}/coda_xterms_functions
 
 
+starting_xterms_message
+
 # Kill all previous Xterms remnants
-kXterms
+if [ "$TEST" == "0" ]; then
+    kXterms
+fi
 
 
 set_xterm_title_cmd() {
@@ -84,8 +87,8 @@ set_xterm_title_cmd() {
 }
 
 size=0
-last_xpos=0
-last_ypos=0
+last_xpos=$FIRST_XPOS
+last_ypos=$FIRST_YPOS
 launch_xterm_group() {
     local type=$1
     local xpos=$2
@@ -111,7 +114,7 @@ launch_xterm_group() {
 	    size=$(echo "$size+1" | bc)
 	    if [ "$size" == "$ysize" ]; then
 		xpos=$(echo "$xpos+$xposincr" | bc)
-		ypos=0
+		ypos=$FIRST_YPOS
 		size=0
 	    else
 		ypos=$(echo "$ypos+$yposincr" | bc)
@@ -124,14 +127,11 @@ launch_xterm_group() {
     last_ypos=$ypos
 }
 
-# Launch the ROCs
-launch_xterm_group ROC 0 ${DEF_XINCR} 0 ${DEF_YINCR} ${DEF_YSIZE}
-
 # Launch the FPGAs
 launch_xterm_group FPGA $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}
 
-# Launch the TSs
-launch_xterm_group TS $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}
+# Launch the ROCs
+launch_xterm_group ROC $last_xpos  ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}
 
 # Launch the PEBs
 launch_xterm_group PEB $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}
@@ -144,3 +144,6 @@ launch_xterm_group ER $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZ
 
 # Launch the DCs
 launch_xterm_group DC $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}
+
+# Launch the TSs
+launch_xterm_group TS $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}

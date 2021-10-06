@@ -7,11 +7,12 @@
 # Uncomment this to test outside of VNC adaq2:4
 #VNCDESKTOP="coda"
 
+# Default table
+CODA_COMPONENT_TABLE=/adaqfs/home/adaq/Desktop/SBS_coda_scripts/shiftworker_table.cfg
+
 if [ ${#@} -gt 0 ]; then
     # Get the CODA_COMPONENT_TABLE
     CODA_COMPONENT_TABLE=$1
-else
-    CODA_COMPONENT_TABLE=GMN_table.cfg
 fi
 
 echo "Using CODA_COMPONENT_TABLE=${CODA_COMPONENT_TABLE}"
