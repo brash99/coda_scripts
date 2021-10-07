@@ -67,7 +67,7 @@ function checkCrate()
 
 	/bin/rm -f $tmpfile
     else
-	ssh -o ConnectTimeout=1 $__hostname echo
+	ssh -x -o ConnectTimeout=1 $__hostname echo
 	local rval=$?
 	if [ "$rval" = 0 ]; then
 	    statHostname="ok"

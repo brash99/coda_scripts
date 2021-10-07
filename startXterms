@@ -5,7 +5,7 @@
 # Uncomment this to test outside of VNC adaq2:4
 #VNCDESKTOP="coda"
 
-TEST=1
+TEST=0
 ARGS=$@
 
 # Default table
@@ -64,3 +64,7 @@ launch_xterm_group DC $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZ
 
 # Launch the TSs
 launch_xterm_group TS $last_xpos ${DEF_XINCR} $last_ypos ${DEF_YINCR} ${DEF_YSIZE}
+
+# (Bob) Server for TCL screens (start run, end run)
+echo "Starting Screen Server"
+ssh -f sbs-onl@adaq2 /adaqfs/home/sbs-onl/bin/restartScServ

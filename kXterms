@@ -59,10 +59,12 @@ do
 	for host in $hosts
 	do
 	    echo "  Killing $type on $host"
-	    ssh -f -l sbs-onl $host pkill $KILLSTRING
+	    ssh -x -f -l sbs-onl $host pkill $KILLSTRING
 	done
     fi
 
 done
+
+ssh -x -f -l sbs-onl adaq2 pkill xser
 
 exit
