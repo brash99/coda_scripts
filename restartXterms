@@ -51,7 +51,7 @@ do
 	for host in $hosts
 	do
 	    echo "  Restarting $type on $host"
-	    ssh -f -l sbs-onl $host pkill $KILLSTRING
+	    ssh -x -f -l sbs-onl $host pkill $KILLSTRING
 	done
     fi
 

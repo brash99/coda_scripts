@@ -49,7 +49,6 @@ function check4nmap()
     if [ "$rval" = "0" ]; then
 	USENMAP=1
     else
-	echo "no nmap"
 	USENMAP=0
     fi
 
