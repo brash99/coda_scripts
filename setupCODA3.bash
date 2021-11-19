@@ -29,7 +29,7 @@ export EXPID=$SAVE_EXPID
 : ${JAVA_HOME:=${HOME}/coda/jdk1.8.0_152}
 export COOL_HOME JAVA_HOME
 
-: ${REMEX_CMSG_HOST:=tedbbdaq}
+: ${REMEX_CMSG_HOST:=adaq2}
 export REMEX_CMSG_HOST REMEX_CMSG_PASSWORD=${EXPID}
 
 
