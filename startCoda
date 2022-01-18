@@ -4,8 +4,8 @@
 #
 PLATFORM_XPOS=40
 
-PEB_XPOS=$((PLATFORM_XPOS + 400))
-ROC_XPOS=$((PEB_XPOS + 400))
+PEB_XPOS=$((PLATFORM_XPOS + 800))
+ROC_XPOS=$((PEB_XPOS + 800))
 
 PEB_YPOS=40
 ROC_YPOS=$((PEB_YPOS))
@@ -27,7 +27,7 @@ fi
 
 
 # Check for previous startCoda remnants
-pidlist=`pgrep platform; pgrep rcgui; pgrep coda_emu_peb`
+pidlist=`pgrep -U $UID platform; pgrep -U $UID rcgui; pgrep -U $UID coda_emu_peb`
 
 if [[ "$pidlist" != "" ]] ; then
    echo $pidlist
@@ -44,10 +44,10 @@ kcoda
 
 
 # Launch the platform in its own xterm
-echo "Starting platform"
-xterm -geometry 60x5+${PLATFORM_XPOS}+0 -T "platform" -bg "red" \
-      -e /bin/bash -c "platform" &
-sleep 8
+#echo "Starting platform"
+#xterm -geometry 80x5+${PLATFORM_XPOS}+0 -T "platform" -bg "red" \
+#      -e /bin/bash -c "platform" &
+#sleep 8
 
 # Launch the rcgui
 echo "Starting rcgui"
@@ -69,9 +69,17 @@ set_xterm_title_cmd() {
 	    XTERM_COLOR="green"
 	    XTERM_CMD="remote_vme $hostname nobody startROC.sh $name $option"
 	    ;;
+	"TS" )
+	    XTERM_COLOR="yellow"
+	    XTERM_CMD="remote_vme $hostname nobody startTS.sh $name $option"
+	    ;;
+	"FPGA" )
+	    XTERM_COLOR="green"
+	    XTERM_CMD="remote_vme $hostname nobody startFPGA.sh $name $option"
+	    ;;
 	"PEB" )
 	    XTERM_COLOR="lightblue"
-	    XTERM_CMD="remote_vme $hostname nobody startPEB.sh"
+	    XTERM_CMD="remote_vme $hostname sbs-onl bash -l startPEB.sh $name"
 	    ;;
     esac
 
@@ -79,28 +87,64 @@ set_xterm_title_cmd() {
 
 # Launch the PEBs
 coda_conf_get_component_list PEB
-PEB_hosts=${CODA_HOSTNAME_LIST[@]}
+if [ $? == 1 ] ; then
+    PEB_hosts=${CODA_HOSTNAME_LIST[@]}
 
-for host in $PEB_hosts
-do
-    codaconf_get_component_name $host PEB
-    set_xterm_title_cmd $host PEB $CODA_COMPONENT_NAME
-    xterm -geometry 60x25+${PEB_XPOS}+${PEB_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
-	  -e /bin/bash -c "$XTERM_CMD" &
-    (( PEB_YPOS += PEB_YPOS_INCR ))
-done
+    for host in $PEB_hosts
+    do
+	codaconf_get_component_name $host PEB
+	set_xterm_title_cmd $host PEB $CODA_COMPONENT_NAME
+	xterm -geometry 80x25+${PEB_XPOS}+${PEB_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
+	      -e /bin/bash -c "$XTERM_CMD" &
+	(( PEB_YPOS += PEB_YPOS_INCR ))
+    done
+fi
 
 # Launch the ROCs
 coda_conf_get_component_list ROC
-ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+if [ $? == 1 ] ; then
+    ROC_hosts=${CODA_HOSTNAME_LIST[@]}
 
-for host in $ROC_hosts
-do
-    codaconf_get_component_name $host ROC
-    set_xterm_title_cmd $host ROC $CODA_COMPONENT_NAME
-    xterm -geometry 60x25+${ROC_XPOS}+${ROC_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
-	  -e /bin/bash -c "$XTERM_CMD" &
-    (( ROC_YPOS += ROC_YPOS_INCR ))
-done
+    for host in $ROC_hosts
+    do
+	codaconf_get_component_name $host ROC
+	set_xterm_title_cmd $host ROC $CODA_COMPONENT_NAME
+	xterm -geometry 80x25+${ROC_XPOS}+${ROC_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
+	      -e /bin/bash -c "$XTERM_CMD" &
+	(( ROC_YPOS += ROC_YPOS_INCR ))
+    done
+fi
 
-exit
+# Launch the FPGAs
+coda_conf_get_component_list FPGA
+if [ $? == 1 ] ; then
+
+    ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+
+    for host in $ROC_hosts
+    do
+	codaconf_get_component_name $host FPGA
+	set_xterm_title_cmd $host FPGA $CODA_COMPONENT_NAME
+	xterm -geometry 80x25+${ROC_XPOS}+${ROC_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
+	      -e /bin/bash -c "$XTERM_CMD" &
+	(( ROC_YPOS += ROC_YPOS_INCR ))
+    done
+
+fi
+
+# Launch the TSs
+coda_conf_get_component_list TS
+if [ $? == 1 ] ; then
+
+    ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+
+    for host in $ROC_hosts
+    do
+	codaconf_get_component_name $host TS
+	set_xterm_title_cmd $host TS $CODA_COMPONENT_NAME
+	xterm -geometry 80x25+${ROC_XPOS}+${ROC_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
+	      -e /bin/bash -c "$XTERM_CMD" &
+	(( ROC_YPOS += ROC_YPOS_INCR ))
+    done
+
+fi

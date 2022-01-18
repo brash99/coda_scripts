@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=HaLOG
+Type=Application
+Exec=/group/halla/www/hallaweb/html/halog/src/halogentry
+Icon=/usr/share/icons/Adwaita/32x32/actions/edit-paste.png

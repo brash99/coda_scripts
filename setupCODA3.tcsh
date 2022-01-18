@@ -1,9 +1,9 @@
-# CSH Environment setup for CODA 3
+# CSH Environment setup for SBS CODA 3
 
 ########################################
 # User Specific Configuration
 ########################################
-setenv CODA /opt/idaq/coda/3.10_arm
+setenv CODA /opt/idaq/coda/3.10_devel
 source $CODA/.setup
 
 setenv SESSION mott
@@ -19,5 +19,3 @@ setenv CODA_COMPONENT_TABLE ${CODA_SCRIPTS}/config/${EXPID}/coda_component_table
 
 # Add config scripts to path
 set path = ($CODA_SCRIPTS $path)
-
-

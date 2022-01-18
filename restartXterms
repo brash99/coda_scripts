@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+#  restartXterms: restart CODA components started with startXterms
+#     They should restart on their own, if they are run with
+#     the startXterms script
+#
+# Uncomment this to test outside of VNC adaq2:4
+#VNCDESKTOP="coda"
+
+# Default table
+CODA_COMPONENT_TABLE=/adaqfs/home/adaq/Desktop/SBS_coda_scripts/shiftworker_table.cfg
+
+if [ ${#@} -gt 0 ]; then
+    # Get the CODA_COMPONENT_TABLE
+    CODA_COMPONENT_TABLE=$1
+fi
+
+echo "Using CODA_COMPONENT_TABLE=${CODA_COMPONENT_TABLE}"
+
+CODA_SCRIPTS=/adaqfs/home/sbs-onl/shiftworker_scripts/coda_scripts
+. ${CODA_SCRIPTS}/coda_xterms_functions
+
+# Check first for any running remote_vme
+verify_or_die "Restart All CODA Components"
+
+# Hardcoded CODA_SCRIPTS and CODA_COMPONENT_TABLE
+. ${CODA_SCRIPTS}/coda_conf_functions
+PATH=${CODA_SCRIPTS}:$PATH
+
+TYPES=( "TS" "ROC" "FPGA" "PEB" "SEB" "ER" "DC" )
+
+for type in ${TYPES[@]}
+do
+    coda_conf_get_component_list $type
+    if [ $? == 1 ] ; then
+	hosts=${CODA_HOSTNAME_LIST[@]}
+
+	case "$type" in
+	    "TS" )
+		KILLSTRING="coda_ts"
+		;;
+	    "ROC" | "FPGA" )
+		KILLSTRING="coda_roc"
+		;;
+	    "PEB" | "ER" | "SEB" | "DC" )
+		KILLSTRING="-f org.jlab.coda.emu.EmuFactory"
+		;;
+	esac
+
+	# now kill the ROC, if it's still runnin gon the remote host
+	for host in $hosts
+	do
+	    echo "  Restarting $type on $host"
+	    ssh -x -f -l sbs-onl $host pkill $KILLSTRING
+	done
+    fi
+
+done
+
+exit

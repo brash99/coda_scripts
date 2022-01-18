@@ -1,13 +1,14 @@
-# BASH Environment setup for CODA 3
+# BASH Environment setup for SBS CODA 3
 
-# Prune any previous CODA defs in PATH and LD_LIBRARY_PATH
+# Set default CODA_SCRIPTS
+: ${CODA_SCRIPTS:=${HOME}/coda_scripts}
 
 export PATH=`echo $PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
 export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
 export CODA_SCRIPTS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export PATH=${CODA_SCRIPTS}:${PATH}
 
-export CODA=/opt/idaq/coda/3.10_arm
+export CODA=/opt/idaq/coda/3.10_devel
 
 if [ -f $CODA/.setup_bash ]; then
     source $CODA/.setup_bash
