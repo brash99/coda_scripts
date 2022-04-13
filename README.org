@@ -5,7 +5,7 @@ Author:
   - TJNAF Fast Electronics and Data Acquisition
 
 * What is this for?
-A collection scripts for use with DAQs running CODA 3
+A collection scripts for use with DAQs running [[https://coda.jlab.org][CODA 3]]
 
 * What do I do with it?
 
@@ -16,11 +16,11 @@ A collection scripts for use with DAQs running CODA 3
 *** Install scripts on CODA 3 Platform host, ROC and PEB clients.
  If you're not sharing this directory with the CODA Components (e.g. with NFS), repeat this step for each component.
 
-**** With git
+- With git
 #+begin_src shell
 git clone git@github.com:JeffersonLab/coda_scripts.git ~/coda/coda_scripts
 #+end_src
-**** From zip
+- From zip
 #+begin_src shell
 unzip coda_scripts-master.zip ~/coda/
 mv coda_scripts-master coda_scripts
@@ -111,10 +111,10 @@ daqroc2  ROC   ROC2  -t setrf.tcl
 ** Run CODA
 
 *** Setup a new ~COOL_HOME~ (stores CODA configurations)
-**** Run ~jcedit~
-**** Create new *COOL* database
-**** Expert -> Session -> New
-***** Enter SESSION name (matches that defined in environment)
+- Run ~jcedit~
+- Create new *COOL* database
+- Expert -> Session -> New
+  - Enter *SESSION* name (matches that defined in environment)
 
 *** Launch CODA3 and its components
 #+begin_src shell
