@@ -1,4 +1,4 @@
-#+TITLE coda_scripts
+#+TITLE: coda_scripts
 
 Author:
 - Bryan Moffit
@@ -26,7 +26,7 @@ unzip coda_scripts-master.zip ~/coda/
 mv coda_scripts-master coda_scripts
 #+end_src
 
-*** Configure environment variables in ~setupCODA3.tcsh~ or ~setupCODA3.bash
+*** Configure environment variables in ~setupCODA3.tcsh~ or ~setupCODA3.bash~
 The setup file depends on your CODA Component's default shell
 **** ~setupCODA3.bash~
 #+begin_src shell
