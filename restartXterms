@@ -4,8 +4,6 @@
 #     They should restart on their own, if they are run with
 #     the startXterms script
 #
-# Uncomment this to test outside of VNC adaq2:4
-#VNCDESKTOP="coda"
 
 if [ ${#@} -gt 0 ]; then
     # Get the CODA_COMPONENT_TABLE

@@ -2,8 +2,6 @@
 #
 #  Kill the xterms spawed with startXterms
 #
-# Uncomment this to test outside of VNC adaq2:4
-#VNCDESKTOP="coda"
 
 source ${CODA_SCRIPTS}/setupCODA3.bash
 

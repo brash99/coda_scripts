@@ -2,8 +2,6 @@
 #
 # Bash script to start up Xterm Windows for ROCs and EBs
 #
-# Uncomment this to test outside of VNC adaq2:4
-#VNCDESKTOP="coda"
 
 TEST=0
 ARGS=$@
