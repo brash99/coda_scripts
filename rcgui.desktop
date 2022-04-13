@@ -1,6 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=CODA RunControl
-Type=Application
-Exec=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts/startRcgui
-Icon=/adaqfs/home/sbs-onl/coda/doc_coda.gif

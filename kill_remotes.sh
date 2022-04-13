@@ -77,6 +77,6 @@ if [ $? == 1 ] ; then
     for host in $PEB_hosts
     do
 	echo "Killing PEB on $host"
-	ssh -l sbs-onl $host pkill -f org.jlab.coda.emu.EmuFactory
+	ssh $host pkill -f org.jlab.coda.emu.EmuFactory
     done
 fi

@@ -1,6 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Restart CODA Components
-Type=Application
-Exec=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts/restartXterms
-Icon=/usr/share/icons/mate/256x256/apps/update-manager.png

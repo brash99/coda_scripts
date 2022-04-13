@@ -1,6 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Start Xterms
-Type=Application
-Exec=/adaqfs/home/sbs-onl/bryan/devel/coda_scripts/startXterms
-Icon=/usr/share/icons/hicolor/scalable/apps/xterm-color.svg

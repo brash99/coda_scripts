@@ -35,8 +35,8 @@ Requires=autofs.service
 Type=simple
 Restart=always
 RestartSec=5
-User=sbs-onl
-ExecStart=/adaqfs/home/sbs-onl/coda_scripts/coda_platform.sh
+User=idaq
+ExecStart=/opt/idaq/coda/coda_scripts/coda_platform.sh
 ExecStop=/bin/pkill -f -TERM coda_platform.sh
 
 [Install]
