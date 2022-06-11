@@ -4,16 +4,18 @@
 # author: vhg, 23-jul-2009
 #         Moffit, 01aug2018
 
-DTIME=$(date +%d%b%Y_%R)
-OUTFILE=/tmp/PLATFORM_output_${DTIME}
+source /home/thisuser/coda/coda_scripts/setupCODA3.bash
+
+#DTIME=$(date +%d%b%Y_%R)
+#OUTFILE=/scr/idaq/platform/PLATFORM_output_${DTIME}.txt
+OUTFILE=/dev/null
 
 # set classpath
-export CLASSPATH=${AFECS_HOME}/afecs-1.4.jar:${AFECS_HOME}/lib/cMsg-3.3.jar:${AFECS_HOME}/lib/jena.jar:${AFECS_HOME}/lib/msql-jdbc-2-0b5.jar
+export CLASSPATH="$CODA/common/jar/*:$CODA/common/jar/jena/*"
 
 # start the platform
 exec &> >(tee $OUTFILE)
-${JAVA_HOME}/bin/java -Xms200m -Xmx500m -Xconcurrentio org.jlab.coda.afecs.platform.APlatform $1 $2 $3  &
-
+${JAVA_HOME}/bin/java -Xms200m -Xmx2048m -XX:-UseConcMarkSweepGC -Djava.net.preferIPv4Stack=true org.jlab.coda.afecs.platform.APlatform $1 $2 $3 &
 JAVAPID=$!
 
 trap "kill $JAVAPID" INT TERM

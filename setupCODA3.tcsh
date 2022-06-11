@@ -1,30 +1,23 @@
-# CSH Environment setup for CODA 3
-
-# Prune any previous CODA defs in PATH and LD_LIBRARY_PATH
-
-set PATH=`echo $PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
-if ($?LD_LIBRARY_PATH == "1") then
-   setenv LD_LIBRARY_PATH `echo $LD_LIBRARY_PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
-endif
+# CSH Environment setup for SBS CODA 3
 
 ########################################
 # User Specific Configuration
 ########################################
-setenv CODA /site/coda/3.10
+setenv CODA_SCRIPTS ${HOME}/coda/coda_scripts
+
+setenv CODA /site/coda/3.10_devel
 source $CODA/.setup
 
 setenv SESSION session
 setenv EXPID expid
 
-setenv COOL_HOME ${HOME}/coda3/cool
+setenv COOL_HOME ${HOME}/coda/cool
 setenv JAVA_HOME ${HOME}/jdk1.8.0_152
 
 setenv REMEX_CMSG_HOST thishost.jlab.org
 setenv REMEX_CMSG_PASSWORD ${EXPID}
 
-setenv CODA_COMPONENT_TABLE ${CODA_CONFIG}/config/${EXPID}/coda_component_table.cfg
+setenv CODA_COMPONENT_TABLE ${CODA_SCRIPTS}/config/${EXPID}/coda_component_table.cfg
 
 # Add config scripts to path
-set path = ($CODA_CONFIG $path)
-
-
+set path = ($CODA_SCRIPTS $path)
