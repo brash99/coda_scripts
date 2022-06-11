@@ -14,7 +14,7 @@ A collection scripts for use with DAQs running [[https://coda.jlab.org][CODA 3]]
   * [[https://www.ssh.com/ssh/keygen/][ssh-keygen: Generate a New SSH Key]]
 
 *** Install scripts on CODA 3 Platform host, ROC and PEB clients.
- If you're not sharing this directory with the CODA Components (e.g. with NFS), repeat this step for each component.
+ If you're not sharing this directory with the CODA Components (e.g. with NFS), repeat *all* of the steps for each component.
 
 - With git
 #+begin_src shell
