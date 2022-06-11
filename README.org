@@ -72,14 +72,14 @@ setenv CODA_COMPONENT_TABLE ${CODA_SCRIPTS}/config/${EXPID}/coda_component_table
 
 **** ~.bashrc~
 #+begin_src shell
-  export CODA_CONFIG=~/coda/coda_scripts
-  source $CODA_CONFIG/setupCODA3.bash
+  export CODA_SCRIPTS=~/coda/coda_scripts
+  source $CODA_SCRIPTS/setupCODA3.bash
 #+end_src
 
 **** ~.tcshrc~
 #+begin_src shell
-  setenv CODA_CONFIG=~/coda/coda_scripts
-  source $CODA_CONFIG/setupCODA3.tcsh
+  setenv CODA_SCRIPTS=~/coda/coda_scripts
+  source $CODA_SCRIPTS/setupCODA3.tcsh
 #+end_src
 
 **** Note
@@ -108,6 +108,30 @@ daqpc1   PEB   PEB1
 daqroc2  ROC   ROC2  -t setrf.tcl
 #+end_example
 
+*** Start the platform 
+
+**** As a systemd service
+- In ~$CODA_SCRIPTS/platform.service~, modify the ~ExecStart~ to point to the script location and ~User~ to the daq user.  e.g.
+#+begin_example
+User=thisuser
+ExecStart=/home/thisuser/coda/coda_scripts/coda_platform.sh
+#+end_example
+
+- Modify the ~$CODA_SCRIPTS/platform.sh~ script for the location of ~setupCODA3.bash~. e.g.
+#+begin_example
+source /home/thisuser/coda/coda_scripts/setupCODA3.bash
+#+end_example
+
+- Enable the platform service (as root).
+#+begin_src shell
+systemctl enable /home/thisuser/coda/coda_scripts/platform.service
+#+end_src
+
+- Start the platform service
+#+begin_src shell
+systemctl start platform
+#+end_src
+  
 ** Run CODA
 
 *** Setup a new ~COOL_HOME~ (stores CODA configurations)

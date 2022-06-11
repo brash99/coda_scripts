@@ -6,6 +6,7 @@ export PATH=${CODA_SCRIPTS}:${PATH}
 
 # if undefined, use /site
 : ${CODA:=/site/coda/3.10_devel}
+export CODA
 
 # CODA/.setup overwrites SESSION and EXPID, save them, or set the default values
 SAVE_SESSION=${SESSION:-session}
